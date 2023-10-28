@@ -8,4 +8,7 @@ export default defineNitroConfig({
   preset: "node-cluster",
   compressPublicAssets: true,
   appConfigFiles: ["app.config.js"],
+  logging: {
+    compressedSizes: false,
+  },
 });
