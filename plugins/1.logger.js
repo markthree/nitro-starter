@@ -23,6 +23,8 @@ export default defineNitroPlugin(async (nitroApp) => {
     dateStyle: "short",
   });
 
+  const { logsDir } = useAppConfig();
+
   nitroApp.hooks.hook("request", (event) => {
     const now = Date.now();
     event.context.startTime = now;
@@ -30,7 +32,7 @@ export default defineNitroPlugin(async (nitroApp) => {
     const date = timeRtf.format(now);
     const record = `${date} --> ${event.path} ${ip}`;
     console.log(record);
-    writeLog(resolve("logs", dateRtf.format(now)), record);
+    writeLog(resolve(logsDir, dateRtf.format(now)), record);
   });
 
   nitroApp.hooks.hook("afterResponse", (event) => {
@@ -40,15 +42,15 @@ export default defineNitroPlugin(async (nitroApp) => {
     const date = timeRtf.format(now);
     const record = `${date} <-- ${event.path} ${ip} ${time}ms`;
     console.log(record);
-    writeLog(resolve("logs", dateRtf.format(now)), record);
+    writeLog(resolve(logsDir, dateRtf.format(now)), record);
   });
 
-  nitro.hooks.hook("error", async (error, { event }) => {
+  nitroApp.hooks.hook("error", async (error, { event }) => {
     const now = Date.now();
     const ip = getRequestIP(event, { xForwardedFor: true }) ?? "";
     const date = timeRtf.format(now);
     const record = `${date} ${event.path} ${ip} ${error}`;
     console.error(record);
-    writeLog(resolve("logs/error", dateRtf.format(now)), record);
+    writeLog(resolve(`${logsDir}/error`, dateRtf.format(now)), record);
   });
 });

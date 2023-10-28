@@ -1,4 +1,4 @@
 export default {
-  foo: 1,
-  bar: 2,
+  // 日志目录
+  logsDir: "./logs",
 };
