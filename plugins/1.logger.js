@@ -1,6 +1,6 @@
 import { existsSync } from "fs";
-import { appendFile, mkdir } from "fs/promises";
 import { dirname, resolve } from "path";
+import { appendFile, mkdir } from "fs/promises";
 
 async function writeLog(file, text) {
   if (!existsSync(file)) {
@@ -41,5 +41,14 @@ export default defineNitroPlugin(async (nitroApp) => {
     const record = `${date} <-- ${event.path} ${ip} ${time}ms`;
     console.log(record);
     writeLog(resolve("logs", dateRtf.format(now)), record);
+  });
+
+  nitro.hooks.hook("error", async (error, { event }) => {
+    const now = Date.now();
+    const ip = getRequestIP(event, { xForwardedFor: true }) ?? "";
+    const date = timeRtf.format(now);
+    const record = `${date} ${event.path} ${ip} ${error}`;
+    console.error(record);
+    writeLog(resolve("logs/error", dateRtf.format(now)), record);
   });
 });
