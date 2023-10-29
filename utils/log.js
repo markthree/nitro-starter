@@ -13,7 +13,7 @@ export async function writeLog(file, text) {
 
 const timeRtf = new Intl.DateTimeFormat("zh-cn", {
   dateStyle: "short",
-  timeStyle: "short",
+  timeStyle: "medium",
 });
 
 const dateRtf = new Intl.DateTimeFormat("zh-cn", {
