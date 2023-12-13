@@ -9,7 +9,7 @@
     "preview": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nitropack": "^2.7.1"
+    "nitropack": "^2.8.1"
   },
   "engines": {
     "node": ">=18"
